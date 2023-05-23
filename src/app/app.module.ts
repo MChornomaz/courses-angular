@@ -11,6 +11,7 @@ import { SearchCourseComponent } from './pages/courses-page/search-course/search
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { CoursesListComponent } from './pages/courses-page/courses-list/courses-list.component';
 import { MainButtonComponent } from './UI/buttons/main-button/main-button.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { MainButtonComponent } from './UI/buttons/main-button/main-button.compon
     CoursesListComponent,
     MainButtonComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
   bootstrap: [AppComponent],
 })

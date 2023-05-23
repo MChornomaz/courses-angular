@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Course } from './../../../models/course.model';
 import { deleteIcon, editIcon } from 'src/app/constants';
 
@@ -8,17 +8,24 @@ import { deleteIcon, editIcon } from 'src/app/constants';
   styleUrls: ['./course-card.component.scss'],
 })
 export class CourseCardComponent {
-  card: Course = {
-    id: 'course1',
-    title: 'Video Course 1. Angular',
-    creationDate: '9 Nov, 2022',
-    duration: 126,
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ducimus illo sequi consequatur quibusdam libero fuga, consequuntur dicta vero nihil voluptas? Quidem saepe fugiat voluptas in sit incidunt inventore numquam. Reprehenderit fugit aliquid nemo ipsa iusto voluptatem temporibus odit nihil provident voluptatibus tempora vero, esse natus ratione laborum quia eaque!',
+  @Input() course: Course = {
+    id: '',
+    title: '',
+    creationDate: '',
+    duration: 0,
+    description: '',
   };
-
+  @Output() deleteButtonClicked = new EventEmitter<string>();
   editIconSvg = editIcon;
   deleteIconSvg = deleteIcon;
+
+  deleteButtonClickHandler() {
+    this.deleteButtonClicked.emit(this.course.id);
+  }
+
+  editButtonHandler() {
+    console.log('Edit button pressed');
+  }
 
   setDuration(time: number) {
     const fullHours = Math.floor(time / 60);
