@@ -1,0 +1,33 @@
+<article
+	class="bg-white p-8 mb-10 flex items-center justify-between rounded-lg shadow-lg"
+>
+	<div class="w-3/4">
+		<div class="flex items-center justify-between">
+			<h3 class="font-semibold text-3xl mb-4">{{ card.title }}</h3>
+			<div class="flex text-slate-400">
+				<p class="mr-5 flex">
+					<img class="w-4 mr-1" src="assets/svg/clock.svg" alt="clock" />
+					{{ setDuration(card.duration) }}
+				</p>
+				<p class="flex">
+					<img class="w-4 mr-2" src="assets/svg/calendar.svg" alt="clock" />
+					{{ card.creationDate }}
+				</p>
+			</div>
+		</div>
+		<div>
+			<p class="text-slate-500 text-lg">{{ card.description }}</p>
+		</div>
+	</div>
+	<div class="flex">
+		<app-main-button
+			[buttonText]="'Edit'"
+			[svgIcon]="editIconSvg"
+			class="mr-5"
+		></app-main-button>
+		<app-main-button
+			[buttonText]="'Delete'"
+			[svgIcon]="deleteIconSvg"
+		></app-main-button>
+	</div>
+</article>
