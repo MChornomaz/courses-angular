@@ -1,7 +1,10 @@
 <app-search-course></app-search-course>
+
 <div class="flex justify-end mt-8 mb-4">
-	<app-main-button
+	<app-button
 		[buttonText]="'Add Course'"
 		[svgIcon]="addCourseIcon"
-	></app-main-button>
+		(click)="addCourseHandler()"
+	></app-button>
 </div>
+<app-courses-list></app-courses-list>

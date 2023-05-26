@@ -1,33 +1,35 @@
 <article
-	class="bg-white p-8 mb-10 flex items-center justify-between rounded-lg shadow-lg"
+	class="bg-white p-8 mb-10 flex items-center justify-between rounded-lg shadow-lg md:flex-col sm:flex-col"
 >
-	<div class="w-3/4">
-		<div class="flex items-center justify-between">
-			<h3 class="font-semibold text-3xl mb-4">{{ card.title }}</h3>
-			<div class="flex text-slate-400">
+	<div class="w-3/4 md:w-full sm:w-full">
+		<div class="flex items-center justify-between sm:flex-col">
+			<h3 class="font-semibold text-3xl mb-4">{{ course.title }}</h3>
+			<div class="flex text-slate-400 sm:mb-6">
 				<p class="mr-5 flex">
 					<img class="w-4 mr-1" src="assets/svg/clock.svg" alt="clock" />
-					{{ setDuration(card.duration) }}
+					{{ setDuration(course.duration) }}
 				</p>
 				<p class="flex">
 					<img class="w-4 mr-2" src="assets/svg/calendar.svg" alt="clock" />
-					{{ card.creationDate }}
+					{{ course.creationDate }}
 				</p>
 			</div>
 		</div>
 		<div>
-			<p class="text-slate-500 text-lg">{{ card.description }}</p>
+			<p class="text-slate-500 text-lg">{{ course.description }}</p>
 		</div>
 	</div>
-	<div class="flex">
-		<app-main-button
+	<div class="flex md:mt-6 sm:mt-6">
+		<app-button
 			[buttonText]="'Edit'"
 			[svgIcon]="editIconSvg"
 			class="mr-5"
-		></app-main-button>
-		<app-main-button
+			(click)="editButtonHandler()"
+		></app-button>
+		<app-button
 			[buttonText]="'Delete'"
 			[svgIcon]="deleteIconSvg"
-		></app-main-button>
+			(click)="deleteButtonClickHandler()"
+		></app-button>
 	</div>
 </article>

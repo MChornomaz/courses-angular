@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-main-button',
+  selector: 'app-button',
   templateUrl: './main-button.component.html',
   styleUrls: ['./main-button.component.scss'],
 })
