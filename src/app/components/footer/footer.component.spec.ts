@@ -8,9 +8,8 @@ describe('FooterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ FooterComponent ]
-    })
-    .compileComponents();
+      declarations: [FooterComponent],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(FooterComponent);
     component = fixture.componentInstance;
@@ -19,5 +18,14 @@ describe('FooterComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should display the correct copyright text', () => {
+    const copyrightText = fixture.nativeElement
+      .querySelector('p')
+      .textContent.trim();
+    const expectedText = 'Copyright © Videocourses. All rights reserved';
+
+    expect(copyrightText).toBe(expectedText);
   });
 });
