@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { searchIconSvg } from 'src/app/constants';
 
 @Component({
   selector: 'app-search-course',
@@ -7,6 +9,11 @@ import { Component } from '@angular/core';
 })
 export class SearchCourseComponent {
   searchString = '';
+  searchIcon: SafeHtml;
+
+  constructor(private sanitizer: DomSanitizer) {
+    this.searchIcon = this.sanitizer.bypassSecurityTrustHtml(searchIconSvg);
+  }
 
   searchHandler() {
     console.log(this.searchString);

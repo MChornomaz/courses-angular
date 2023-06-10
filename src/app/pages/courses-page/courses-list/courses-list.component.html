@@ -3,13 +3,14 @@
 		<app-course-card
 			*ngFor="let courseItem of courses; trackBy: trackByFn"
 			[course]="courseItem"
-			(deleteButtonClicked)="deleteCourseHandler($event)"
+			(deleteButtonClicked)="deleteCourseHandler(courseItem.id)"
 		></app-course-card>
 	</div>
 	<div
 		class="w-full h-14 bg-white rounded-md flex items-center justify-center shadow-lg"
 	>
 		<button
+			id="load-more"
 			class="uppercase underline text-sky-600 font-semibold"
 			(click)="loadMoreClickHandler()"
 		>
