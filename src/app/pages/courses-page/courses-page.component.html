@@ -1,4 +1,6 @@
-<app-search-course></app-search-course>
+<app-search-course
+	(filteredCourses)="filteredCourses = $event"
+></app-search-course>
 
 <div class="flex justify-end mt-8 mb-4">
 	<app-button
@@ -8,4 +10,4 @@
 		(click)="addCourseHandler()"
 	></app-button>
 </div>
-<app-courses-list></app-courses-list>
+<app-courses-list [initialCourses]="filteredCourses"></app-courses-list>

@@ -1,17 +1,24 @@
-<article
-	class="bg-white p-8 mb-10 flex items-center justify-between rounded-lg shadow-lg md:flex-col sm:flex-col"
->
+<article class="flex items-center justify-between">
 	<div class="w-3/4 md:w-full sm:w-full">
 		<div class="flex items-center justify-between sm:flex-col">
-			<h3 class="font-semibold text-3xl mb-4">{{ course.title }}</h3>
+			<h3 class="font-semibold text-3xl mb-4 flex items-center">
+				{{ course.title | uppercase }}
+				<div *ngIf="course.topRated">
+					<img
+						src="assets/svg/star-svgrepo-com.svg"
+						alt="star icon"
+						class="ml-3 mt-1"
+					/>
+				</div>
+			</h3>
 			<div class="flex text-slate-400 sm:mb-6">
 				<p class="mr-5 flex">
 					<img class="w-4 mr-1" src="assets/svg/clock.svg" alt="clock" />
-					{{ setDuration(course.duration) }}
+					{{ course.duration | duration }}
 				</p>
 				<p class="flex">
 					<img class="w-4 mr-2" src="assets/svg/calendar.svg" alt="clock" />
-					{{ course.creationDate }}
+					{{ creationDate | date : 'd MMM, y' }}
 				</p>
 			</div>
 		</div>

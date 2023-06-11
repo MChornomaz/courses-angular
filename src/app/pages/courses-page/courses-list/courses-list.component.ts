@@ -1,17 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { COURSE_LIST } from 'src/app/constants';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Course } from 'src/app/models/course.model';
+import { COURSE_LIST } from '../../../constants';
 
 @Component({
   selector: 'app-courses-list',
   templateUrl: './courses-list.component.html',
   styleUrls: ['./courses-list.component.scss'],
 })
-export class CoursesListComponent implements OnInit {
+export class CoursesListComponent implements OnInit, OnChanges {
+  @Input() initialCourses: Course[] = [];
   courses: Course[] = [];
 
-  ngOnInit(): void {
-    this.courses = COURSE_LIST;
+  ngOnInit() {
+    this.initialCourses = COURSE_LIST;
+    this.courses = this.initialCourses;
+  }
+
+  ngOnChanges() {
+    this.courses = this.initialCourses;
   }
 
   loadMoreClickHandler() {

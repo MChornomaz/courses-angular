@@ -12,6 +12,10 @@ import { NavigationComponent } from './components/navigation/navigation.componen
 import { CoursesListComponent } from './pages/courses-page/courses-list/courses-list.component';
 import { MainButtonComponent } from './html/buttons/main-button/main-button.component';
 import { FormsModule } from '@angular/forms';
+import { CourseBorderColorDirective } from './directives/courseBorderColor/course-border-color.directive';
+import { DurationPipe } from './pipes/DurationPipe/duration-pipe.pipe';
+import { OrderByDatePipe } from './pipes/OrderByDate/order-by-date.pipe';
+import { FilterPipe } from './pipes/FilterPipe/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -25,6 +29,10 @@ import { FormsModule } from '@angular/forms';
     NavigationComponent,
     CoursesListComponent,
     MainButtonComponent,
+    CourseBorderColorDirective,
+    DurationPipe,
+    OrderByDatePipe,
+    FilterPipe,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
