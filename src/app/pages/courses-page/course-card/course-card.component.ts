@@ -11,10 +11,12 @@ export class CourseCardComponent {
   @Input() course: Course = {
     id: '',
     title: '',
-    creationDate: '',
+    creationDate: new Date(),
     duration: 0,
     description: '',
   };
+
+  @Input() creationDate: Date = new Date();
   @Output() deleteButtonClicked = new EventEmitter<string>();
   editIconSvg = editIcon;
   deleteIconSvg = deleteIcon;
@@ -25,20 +27,5 @@ export class CourseCardComponent {
 
   editButtonHandler() {
     console.log('Edit button pressed');
-  }
-
-  setDuration(time: number) {
-    const fullHours = Math.floor(time / 60);
-    const minutes = time % 60;
-    let finalHours = '';
-    let finalMinutes = '';
-
-    finalHours = `${fullHours}h`;
-    if (minutes < 10) {
-      finalMinutes = `0${minutes}min`;
-    } else {
-      finalMinutes = `${minutes}min`;
-    }
-    return `${finalHours} ${finalMinutes}`;
   }
 }

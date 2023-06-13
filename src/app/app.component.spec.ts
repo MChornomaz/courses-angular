@@ -11,6 +11,8 @@ import { MainButtonComponent } from './html/buttons/main-button/main-button.comp
 import { CoursesListComponent } from './pages/courses-page/courses-list/courses-list.component';
 import { FormsModule } from '@angular/forms';
 import { CourseCardComponent } from './pages/courses-page/course-card/course-card.component';
+import { OrderByDatePipe } from './pipes/OrderByDate/order-by-date.pipe';
+import { DurationPipe } from './pipes/DurationPipe/duration-pipe.pipe';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -30,6 +32,8 @@ describe('AppComponent', () => {
         MainButtonComponent,
         CoursesListComponent,
         CourseCardComponent,
+        OrderByDatePipe,
+        DurationPipe,
       ],
     }).compileComponents();
   });

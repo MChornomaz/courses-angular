@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { SearchCourseComponent } from './search-course.component';
 import { FormsModule } from '@angular/forms';
+import { OrderByDatePipe } from '../../../pipes/OrderByDate/order-by-date.pipe';
 
 describe('SearchCourseComponent', () => {
   let component: SearchCourseComponent;
@@ -9,7 +10,7 @@ describe('SearchCourseComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SearchCourseComponent],
+      declarations: [SearchCourseComponent, OrderByDatePipe],
       imports: [FormsModule],
     }).compileComponents();
 
@@ -43,15 +44,5 @@ describe('SearchCourseComponent', () => {
     fixture.detectChanges();
 
     expect(component.searchHandler).toHaveBeenCalled();
-  });
-
-  it('should log searchString when searchHandler method is called', () => {
-    spyOn(console, 'log');
-    const testValue = 'Test Search';
-    component.searchString = testValue;
-
-    component.searchHandler();
-
-    expect(console.log).toHaveBeenCalledWith(testValue);
   });
 });

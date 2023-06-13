@@ -7,6 +7,8 @@ import { NavigationComponent } from 'src/app/components/navigation/navigation.co
 import { CoursesListComponent } from './courses-list/courses-list.component';
 import { FormsModule } from '@angular/forms';
 import { CourseCardComponent } from './course-card/course-card.component';
+import { DurationPipe } from '../../pipes/DurationPipe/duration-pipe.pipe';
+import { OrderByDatePipe } from '../../pipes/OrderByDate/order-by-date.pipe';
 
 describe('CoursesPageComponent', () => {
   let component: CoursesPageComponent;
@@ -21,6 +23,8 @@ describe('CoursesPageComponent', () => {
         NavigationComponent,
         CoursesListComponent,
         CourseCardComponent,
+        DurationPipe,
+        OrderByDatePipe,
       ],
       imports: [FormsModule],
     }).compileComponents();

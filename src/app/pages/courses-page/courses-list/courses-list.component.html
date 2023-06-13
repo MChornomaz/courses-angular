@@ -1,13 +1,21 @@
-<div>
+<div *ngIf="courses.length > 0">
 	<div>
 		<app-course-card
-			*ngFor="let courseItem of courses; trackBy: trackByFn"
+			*ngFor="
+				let courseItem of courses | orderByDate : 'creationDate';
+				trackBy: trackByFn
+			"
 			[course]="courseItem"
 			(deleteButtonClicked)="deleteCourseHandler(courseItem.id)"
+			class="bg-white p-8 mb-10 flex items-center justify-between rounded-lg shadow-lg md:flex-col sm:flex-col"
+			appCourseBorderColor
+			[creationDate]="courseItem.creationDate"
+			[ngClass]="courseItem.topRated ? 'bg-amber-100' : ''"
 		></app-course-card>
 	</div>
 	<div
 		class="w-full h-14 bg-white rounded-md flex items-center justify-center shadow-lg"
+		*ngIf="courses.length > 0"
 	>
 		<button
 			id="load-more"
@@ -16,5 +24,15 @@
 		>
 			load more
 		</button>
+	</div>
+</div>
+<div
+	class="w-full h-14 bg-white rounded-md flex items-center justify-center shadow-lg"
+	*ngIf="courses.length === 0"
+>
+	<div>
+		<p class="text-xl uppercase font-semibold">
+			no data, feel free to add new course
+		</p>
 	</div>
 </div>
