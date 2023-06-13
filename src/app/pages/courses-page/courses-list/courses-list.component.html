@@ -5,17 +5,16 @@
 				let courseItem of courses | orderByDate : 'creationDate';
 				trackBy: trackByFn
 			"
+			(deleteButtonClicked)="openModal(courseItem.id)"
 			[course]="courseItem"
-			(deleteButtonClicked)="deleteCourseHandler(courseItem.id)"
 			class="bg-white p-8 mb-10 flex items-center justify-between rounded-lg shadow-lg md:flex-col sm:flex-col"
 			appCourseBorderColor
 			[creationDate]="courseItem.creationDate"
-			[ngClass]="courseItem.topRated ? 'bg-amber-100' : ''"
+			[ngClass]="courseItem.topRated ? 'bg-amber-200' : ''"
 		></app-course-card>
 	</div>
 	<div
 		class="w-full h-14 bg-white rounded-md flex items-center justify-center shadow-lg"
-		*ngIf="courses.length > 0"
 	>
 		<button
 			id="load-more"
@@ -36,3 +35,24 @@
 		</p>
 	</div>
 </div>
+<app-modal [isOpen]="isModalOpen" (closed)="closeModal()">
+	<div class="p-5 flex flex-col items-center">
+		<h2 class="text-xl font-bold mb-4">
+			Do you really want to delete this course?
+		</h2>
+		<div class="w-1/2 flex justify-around">
+			<button
+				(click)="deleteCourseHandler(deleteCourseId)"
+				class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+			>
+				Yes
+			</button>
+			<button
+				(click)="closeModal()"
+				class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+			>
+				No
+			</button>
+		</div>
+	</div>
+</app-modal>

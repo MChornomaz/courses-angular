@@ -7,6 +7,7 @@ import { COURSE_LIST } from 'src/app/constants';
 import { Course } from 'src/app/models/course.model';
 import { OrderByDatePipe } from '../../../pipes/OrderByDate/order-by-date.pipe';
 import { DurationPipe } from '../../../pipes/DurationPipe/duration-pipe.pipe';
+import { ModalComponent } from '../../../html/modal/modal/modal.component';
 
 describe('CoursesListComponent', () => {
   let component: CoursesListComponent;
@@ -20,6 +21,7 @@ describe('CoursesListComponent', () => {
         MainButtonComponent,
         OrderByDatePipe,
         DurationPipe,
+        ModalComponent,
       ],
     }).compileComponents();
 

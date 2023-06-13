@@ -8,15 +8,17 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 })
 export class MainButtonComponent implements OnInit {
   @Input() buttonText = 'Add Course';
-  @Input() svgIcon = '';
+  @Input() svgIcon: string | null = '';
 
   sanitizedSvgIcon?: SafeHtml;
 
   constructor(private sanitizer: DomSanitizer) {}
 
   ngOnInit() {
-    this.sanitizedSvgIcon = this.sanitizer.bypassSecurityTrustHtml(
-      this.svgIcon
-    );
+    if (this.svgIcon) {
+      this.sanitizedSvgIcon = this.sanitizer.bypassSecurityTrustHtml(
+        this.svgIcon
+      );
+    }
   }
 }
