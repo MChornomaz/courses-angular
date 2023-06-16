@@ -1,23 +1,29 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Course } from 'src/app/models/course.model';
-import { COURSE_LIST } from '../../../constants';
+import { CoursesService } from '../../../services/courses/courses.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-courses-list',
   templateUrl: './courses-list.component.html',
   styleUrls: ['./courses-list.component.scss'],
 })
-export class CoursesListComponent implements OnInit, OnChanges {
-  @Input() initialCourses: Course[] = [];
+export class CoursesListComponent implements OnInit, OnDestroy {
   courses: Course[] = [];
+  isModalOpen = false;
+  deleteCourseId = '';
+  subscription: Subscription;
 
-  ngOnInit() {
-    this.initialCourses = COURSE_LIST;
-    this.courses = this.initialCourses;
+  constructor(private coursesService: CoursesService) {
+    this.subscription = this.coursesService.coursesChanged.subscribe(
+      (courses: Course[]) => {
+        this.courses = courses;
+      }
+    );
   }
 
-  ngOnChanges() {
-    this.courses = this.initialCourses;
+  ngOnInit() {
+    this.courses = this.coursesService.getList();
   }
 
   loadMoreClickHandler() {
@@ -25,10 +31,25 @@ export class CoursesListComponent implements OnInit, OnChanges {
   }
 
   deleteCourseHandler(id: string) {
-    console.log('Course to delete has id: ', id);
+    this.coursesService.removeCourse(id);
+    this.courses = this.coursesService.getList();
+    this.closeModal();
   }
 
   trackByFn(index: number, course: Course): string {
     return course.id;
+  }
+
+  openModal(id: string): void {
+    this.isModalOpen = true;
+    this.deleteCourseId = id;
+  }
+
+  closeModal(): void {
+    this.isModalOpen = false;
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

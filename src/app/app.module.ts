@@ -16,6 +16,9 @@ import { CourseBorderColorDirective } from './directives/courseBorderColor/cours
 import { DurationPipe } from './pipes/DurationPipe/duration-pipe.pipe';
 import { OrderByDatePipe } from './pipes/OrderByDate/order-by-date.pipe';
 import { FilterPipe } from './pipes/FilterPipe/filter.pipe';
+import { ModalComponent } from './html/modal/modal/modal.component';
+import { LoginPageComponent } from './pages/loginPage/login-page/login-page.component';
+import { IfAuthenticatedDirective } from './directives/ifAuthenticated/if-authenticated.directive';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { FilterPipe } from './pipes/FilterPipe/filter.pipe';
     DurationPipe,
     OrderByDatePipe,
     FilterPipe,
+    ModalComponent,
+    LoginPageComponent,
+    IfAuthenticatedDirective,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],

@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 import { CourseCardComponent } from './pages/courses-page/course-card/course-card.component';
 import { OrderByDatePipe } from './pipes/OrderByDate/order-by-date.pipe';
 import { DurationPipe } from './pipes/DurationPipe/duration-pipe.pipe';
+import { ModalComponent } from './html/modal/modal/modal.component';
+import { LoginPageComponent } from './pages/loginPage/login-page/login-page.component';
 
 describe('AppComponent', () => {
   let component: AppComponent;
@@ -34,6 +36,8 @@ describe('AppComponent', () => {
         CourseCardComponent,
         OrderByDatePipe,
         DurationPipe,
+        ModalComponent,
+        LoginPageComponent,
       ],
     }).compileComponents();
   });

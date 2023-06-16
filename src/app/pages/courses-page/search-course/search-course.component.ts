@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
-import { COURSE_LIST, searchIconSvg } from 'src/app/constants';
-import { Course } from '../../../models/course.model';
+import { searchIconSvg } from 'src/app/constants';
+
 import { FilterPipe } from '../../../pipes/FilterPipe/filter.pipe';
+import { CoursesService } from '../../../services/courses/courses.service';
 
 @Component({
   selector: 'app-search-course',
@@ -13,33 +14,21 @@ import { FilterPipe } from '../../../pipes/FilterPipe/filter.pipe';
 export class SearchCourseComponent {
   searchString = '';
   searchIcon: SafeHtml;
-  @Output() filteredCourses: EventEmitter<Course[]> = new EventEmitter<
-    Course[]
-  >();
-  courses: Course[] = [];
 
-  constructor(private sanitizer: DomSanitizer, private filterPipe: FilterPipe) {
+  constructor(
+    private sanitizer: DomSanitizer,
+    private coursesService: CoursesService
+  ) {
     this.searchIcon = this.sanitizer.bypassSecurityTrustHtml(searchIconSvg);
   }
 
-  applyFilter() {
-    this.courses = this.filterPipe.transform(
-      COURSE_LIST,
-      this.searchString,
-      'title'
-    );
-    this.filteredCourses.emit(this.courses);
-  }
-
   searchHandler() {
-    this.filteredCourses.emit([]);
-    this.applyFilter();
+    this.coursesService.filterCourses(this.searchString);
   }
 
   handleInputChange() {
     if (this.searchString === '' || this.searchString.trim() === '') {
-      this.filteredCourses.emit([]);
-      this.applyFilter();
+      this.coursesService.resetCourses();
     }
   }
 }
