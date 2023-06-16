@@ -23,12 +23,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   @Output() showLogin = new EventEmitter();
 
   constructor(private authService: AuthenticationService) {
-    this.authSubscription = this.authService.authenticationChanged.subscribe(
+    this.authSubscription = this.authService.authenticationChanged$.subscribe(
       (isAuth: boolean) => {
         this.isAuthenticated = isAuth;
       }
     );
-    this.userSubscription = this.authService.userChanged.subscribe(
+    this.userSubscription = this.authService.userChanged$.subscribe(
       (user: User) => {
         this.userName = user.firsName;
       }

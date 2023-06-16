@@ -20,6 +20,7 @@
             "outputPath": "dist/courses-angular",
             "index": "src/index.html",
             "main": "src/main.ts",
+            "aot": true,
             "polyfills": [
               "zone.js"
             ],

@@ -15,7 +15,7 @@ export class CoursesListComponent implements OnInit, OnDestroy {
   subscription: Subscription;
 
   constructor(private coursesService: CoursesService) {
-    this.subscription = this.coursesService.coursesChanged.subscribe(
+    this.subscription = this.coursesService.coursesChanged$.subscribe(
       (courses: Course[]) => {
         this.courses = courses;
       }
