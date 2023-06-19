@@ -9,6 +9,7 @@ import { AuthenticationService } from '../../services/authentication/authenticat
 import { Subscription } from 'rxjs';
 import { deleteIcon, editIcon } from '../../constants';
 import { User } from '../../models/user.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -20,9 +21,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   userName = '';
   authSubscription: Subscription;
   userSubscription: Subscription;
-  @Output() showLogin = new EventEmitter();
 
-  constructor(private authService: AuthenticationService) {
+  constructor(
+    private authService: AuthenticationService,
+    private router: Router
+  ) {
     this.authSubscription = this.authService.authenticationChanged$.subscribe(
       (isAuth: boolean) => {
         this.isAuthenticated = isAuth;
@@ -39,7 +42,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   deleteIconSvg = deleteIcon;
 
   showLoginPage() {
-    this.showLogin.emit();
+    this.router.navigate(['login']);
   }
 
   ngOnInit() {
@@ -50,7 +53,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   logOut() {
     this.authService.logOut();
-    console.log('LogOut ', this.userName);
+    this.router.navigate(['login']);
   }
 
   ngOnDestroy() {

@@ -30,8 +30,12 @@
 				[(ngModel)]="description"
 			></textarea>
 		</div>
-		<app-form-date (dateChanged)="onDateChange($event)"></app-form-date>
+		<app-form-date
+			[date]="date"
+			(dateChanged)="onDateChange($event)"
+		></app-form-date>
 		<app-form-duration
+			[duration]="duration"
 			(durationChanged)="onDurationChange($event)"
 		></app-form-duration>
 		<app-form-authors></app-form-authors>

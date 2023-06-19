@@ -1,9 +1,12 @@
 <nav class="h-16 bg-white flex items-center px-16">
 	<ul class="flex items-end h-full">
 		<li
-			class="cursor-pointer text-xl font-semibold text-gray-700 p-3 px-5 rounded-t-md bg-slate-200 mr-5 hover:text-white"
+			class="text-xl font-semibold text-gray-700 p-3 px-5 rounded-t-md bg-slate-200 mr-5"
 		>
-			<a>Courses</a>
+			<a routerLink="courses" class="cursor-pointer hover:text-white"
+				>Courses</a
+			>
+			<span>{{ courseTitle }}</span>
 		</li>
 	</ul>
 </nav>

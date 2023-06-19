@@ -1,13 +1,8 @@
 <div class="relative">
-	<app-header (showLogin)="setShowLogin()"></app-header>
+	<app-header></app-header>
 	<app-navigation></app-navigation>
 	<main class="bg-slate-200 flex flex-col main">
-		<app-login-page
-			*ngIf="showLogin"
-			(hideLogin)="setShowLogin()"
-		></app-login-page>
-		<app-courses-page></app-courses-page>
-		<app-course-form-page></app-course-form-page>
+		<router-outlet></router-outlet>
 	</main>
 	<app-footer></app-footer>
 </div>

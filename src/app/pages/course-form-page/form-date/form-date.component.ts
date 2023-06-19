@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-form-date',
@@ -7,7 +7,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class FormDateComponent {
   @Output() dateChanged = new EventEmitter<string>();
-  date = '';
+  @Input() date = '';
 
   onDateChange() {
     this.dateChanged.emit(this.date);

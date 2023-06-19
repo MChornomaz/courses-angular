@@ -23,6 +23,8 @@ import { CourseFormPageComponent } from './pages/course-form-page/course-form-pa
 import { FormDateComponent } from './pages/course-form-page/form-date/form-date.component';
 import { FormDurationComponent } from './pages/course-form-page/form-duration/form-duration.component';
 import { FormAuthorsComponent } from './pages/course-form-page/form-authors/form-authors.component';
+import { Page404Component } from './pages/page404/page404.component';
+import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -47,9 +49,10 @@ import { FormAuthorsComponent } from './pages/course-form-page/form-authors/form
     FormDateComponent,
     FormDurationComponent,
     FormAuthorsComponent,
+    Page404Component,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
-  providers: [],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
