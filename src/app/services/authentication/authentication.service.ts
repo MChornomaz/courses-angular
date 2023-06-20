@@ -14,8 +14,8 @@ export class AuthenticationService {
     email: '',
     token: '',
   };
-  authenticationChanged = new Subject<boolean>();
-  userChanged = new Subject<User>();
+  authenticationChanged$ = new Subject<boolean>();
+  userChanged$ = new Subject<User>();
 
   login(email: string) {
     // test user was created as a temporal placeholder for future server data
@@ -31,8 +31,8 @@ export class AuthenticationService {
     localStorage.setItem('userEmail', email);
     localStorage.setItem('token', testUser.token);
     this.userInfo = testUser;
-    this.authenticationChanged.next(this.isAuthenticated);
-    this.userChanged.next(this.userInfo);
+    this.authenticationChanged$.next(this.isAuthenticated);
+    this.userChanged$.next(this.userInfo);
   }
 
   logOut() {
@@ -40,8 +40,8 @@ export class AuthenticationService {
     localStorage.removeItem('userName');
     localStorage.removeItem('userEmail');
     localStorage.removeItem('token');
-    this.authenticationChanged.next(this.isAuthenticated);
-    this.userChanged.next(this.userInfo);
+    this.authenticationChanged$.next(this.isAuthenticated);
+    this.userChanged$.next(this.userInfo);
   }
 
   getUserInfo() {
@@ -64,8 +64,8 @@ export class AuthenticationService {
 
       this.isAuthenticated = true;
       this.userInfo = user;
-      this.authenticationChanged.next(this.isAuthenticated);
-      this.userChanged.next(this.userInfo);
+      this.authenticationChanged$.next(this.isAuthenticated);
+      this.userChanged$.next(this.userInfo);
     }
   }
 }

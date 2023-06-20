@@ -19,7 +19,7 @@ export class IfAuthenticatedDirective implements OnInit {
     private viewContainer: ViewContainerRef,
     private authService: AuthenticationService
   ) {
-    this.subscription = this.authService.authenticationChanged.subscribe(
+    this.subscription = this.authService.authenticationChanged$.subscribe(
       (isAuth: boolean) => {
         this.isAuthenticated = isAuth;
       }
@@ -27,7 +27,7 @@ export class IfAuthenticatedDirective implements OnInit {
   }
 
   ngOnInit() {
-    this.subscription = this.authService.authenticationChanged.subscribe(
+    this.subscription = this.authService.authenticationChanged$.subscribe(
       (isAuth: boolean) => {
         this.isAuthenticated = isAuth;
         this.updateView();

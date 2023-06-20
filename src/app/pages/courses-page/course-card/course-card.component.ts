@@ -3,7 +3,7 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewChild,
+  ChangeDetectionStrategy,
 } from '@angular/core';
 import { Course } from './../../../models/course.model';
 import { deleteIcon, editIcon } from 'src/app/constants';
@@ -12,6 +12,7 @@ import { deleteIcon, editIcon } from 'src/app/constants';
   selector: 'app-course-card',
   templateUrl: './course-card.component.html',
   styleUrls: ['./course-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseCardComponent {
   @Input() course: Course = {

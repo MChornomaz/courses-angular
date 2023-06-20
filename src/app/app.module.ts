@@ -19,6 +19,10 @@ import { FilterPipe } from './pipes/FilterPipe/filter.pipe';
 import { ModalComponent } from './html/modal/modal/modal.component';
 import { LoginPageComponent } from './pages/loginPage/login-page/login-page.component';
 import { IfAuthenticatedDirective } from './directives/ifAuthenticated/if-authenticated.directive';
+import { CourseFormPageComponent } from './pages/course-form-page/course-form-page.component';
+import { FormDateComponent } from './pages/course-form-page/form-date/form-date.component';
+import { FormDurationComponent } from './pages/course-form-page/form-duration/form-duration.component';
+import { FormAuthorsComponent } from './pages/course-form-page/form-authors/form-authors.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +43,10 @@ import { IfAuthenticatedDirective } from './directives/ifAuthenticated/if-authen
     ModalComponent,
     LoginPageComponent,
     IfAuthenticatedDirective,
+    CourseFormPageComponent,
+    FormDateComponent,
+    FormDurationComponent,
+    FormAuthorsComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule],
   providers: [],
