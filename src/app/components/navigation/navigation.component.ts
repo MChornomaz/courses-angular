@@ -21,14 +21,7 @@ export class NavigationComponent implements OnInit {
       .pipe(
         filter((event) => event instanceof NavigationEnd),
         map(() => {
-          const firstChild = this.route.root.firstChild;
-          if (firstChild) {
-            const snapshot = firstChild.snapshot;
-            if (snapshot) {
-              return snapshot.params['id'];
-            }
-          }
-          return null;
+          return this.route.root.firstChild?.snapshot?.params['id'];
         })
       )
       .subscribe((id) => {

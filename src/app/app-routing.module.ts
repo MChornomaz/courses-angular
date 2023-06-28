@@ -6,24 +6,23 @@ import { Page404Component } from './pages/page404/page404.component';
 import { LoginPageComponent } from './pages/loginPage/login-page/login-page.component';
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 
+
 const routes: Routes = [
   { path: '', redirectTo: 'courses', pathMatch: 'full' },
+  { path: 'login', component: LoginPageComponent },
   {
     canActivate: [AuthGuardService],
     path: 'courses',
-    component: CoursesPageComponent,
-  },
-  {
-    canActivate: [AuthGuardService],
-    path: 'courses/new',
-    component: CourseFormPageComponent,
+    children: [
+      { path: '', component: CoursesPageComponent },
+      { path: 'new', component: CourseFormPageComponent },
+    ],
   },
   {
     canActivate: [AuthGuardService],
     path: 'courses/:id',
     component: CourseFormPageComponent,
   },
-  { path: 'login', component: LoginPageComponent },
   { path: 'not-found', component: Page404Component },
   { path: '**', redirectTo: 'not-found' },
 ];
