@@ -5,10 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  showLogin = false;
-
-  setShowLogin() {
-    this.showLogin = !this.showLogin;
-  }
-}
+export class AppComponent {}

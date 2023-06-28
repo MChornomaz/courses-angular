@@ -17,6 +17,15 @@ export class AuthenticationService {
   authenticationChanged$ = new Subject<boolean>();
   userChanged$ = new Subject<User>();
 
+  userIsAuthenticated() {
+    const promise = new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve(this.isAuthenticated);
+      }, 300);
+    });
+    return promise;
+  }
+
   login(email: string) {
     // test user was created as a temporal placeholder for future server data
     const testUser = {

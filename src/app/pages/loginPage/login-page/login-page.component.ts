@@ -1,5 +1,6 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthenticationService } from '../../../services/authentication/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-page',
@@ -9,14 +10,15 @@ import { AuthenticationService } from '../../../services/authentication/authenti
 export class LoginPageComponent {
   email = '';
   password = '';
-  @Output() hideLogin = new EventEmitter();
-  constructor(private authenticationService: AuthenticationService) {}
+  constructor(
+    private authenticationService: AuthenticationService,
+    private router: Router
+  ) {}
 
   login() {
     if (this.email.trim().length > 0 && this.password.trim().length > 0) {
       this.authenticationService.login(this.email);
-      this.hideLogin.emit();
-      console.log('Logged in successfully');
+      this.router.navigate(['courses']);
     }
   }
 }

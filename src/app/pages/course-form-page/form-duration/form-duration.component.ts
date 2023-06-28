@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-form-duration',
@@ -7,7 +7,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 })
 export class FormDurationComponent {
   @Output() durationChanged = new EventEmitter<number>();
-  duration = 0;
+  @Input() duration = 0;
 
   onDurationChange() {
     this.durationChanged.emit(this.duration);

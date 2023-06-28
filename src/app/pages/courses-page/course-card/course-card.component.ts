@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { Course } from './../../../models/course.model';
 import { deleteIcon, editIcon } from 'src/app/constants';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-course-card',
@@ -28,11 +29,13 @@ export class CourseCardComponent {
   editIconSvg = editIcon;
   deleteIconSvg = deleteIcon;
 
+  constructor(private router: Router) {}
+
   deleteButtonClickHandler() {
     this.deleteButtonClicked.emit(this.course.id);
   }
 
   editButtonHandler() {
-    console.log('Edit button pressed');
+    this.router.navigate(['courses', this.course.id]);
   }
 }
