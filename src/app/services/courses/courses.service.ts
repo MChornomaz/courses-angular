@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Course } from '../../models/course.model';
-import { Subject } from 'rxjs';
+import { Subject, Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { catchError, debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { LoadingService } from '../loading/loading.service';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +12,7 @@ export class CoursesService {
   private courses: Course[] = [];
   coursesChanged$ = new Subject<Course[]>();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private loadingService: LoadingService) {
     this.fetchCourses();
     this.fetchCourses().subscribe((response) => {
       this.courses = response;
@@ -29,6 +30,7 @@ export class CoursesService {
   }
 
   async createCourse(course: Course) {
+    this.loadingService.showLoading();
     const response = await this.http
       .post<Course>(`http://localhost:3004/courses/`, course)
       .pipe(
@@ -44,6 +46,7 @@ export class CoursesService {
         this.coursesChanged$.next(this.courses);
       });
     }
+    this.loadingService.hideLoading();
   }
 
   getCourseById(id: number) {
@@ -62,25 +65,49 @@ export class CoursesService {
     }
   }
 
-  async filterCourses(searchString: string) {
-    const response = await this.http
-      .get<Course[]>(
-        `http://localhost:3004/courses?textFragment=${searchString}`
-      )
-      .pipe(
-        catchError((error) => {
-          throw new Error(`An error occurred: ${error.message}`);
-        })
-      )
-      .toPromise();
-
-    if (response) {
-      this.courses = response;
-      this.coursesChanged$.next(this.courses);
+  filterCourses(searchString: string) {
+    this.loadingService.showLoading();
+    if (searchString.length >= 3) {
+      return this.getCoursesBySearchString(searchString)
+        .pipe(
+          debounceTime(500),
+          distinctUntilChanged(),
+          switchMap((response: Course[]) => {
+            this.courses = response;
+            this.coursesChanged$.next(this.courses);
+            this.loadingService.hideLoading();
+            return of(response);
+          })
+        )
+        .subscribe();
+    } else {
+      return this.fetchCourses()
+        .pipe(
+          debounceTime(500),
+          switchMap((response: Course[]) => {
+            this.courses = response;
+            this.coursesChanged$.next(this.courses);
+            this.loadingService.hideLoading();
+            return of(response);
+          })
+        )
+        .subscribe();
     }
+
+  }
+
+  private getCoursesBySearchString(searchString: string): Observable<Course[]> {
+    return this.http.get<Course[]>(
+      `http://localhost:3004/courses?textFragment=${searchString}`
+    ).pipe(
+      catchError((error) => {
+        throw new Error(`An error occurred: ${error.message}`);
+      })
+    );
   }
 
   async removeCourse(id: number) {
+    this.loadingService.showLoading();
     const response = await this.http
       .delete<Course[]>(`http://localhost:3004/courses/${id}`)
       .pipe(
@@ -93,16 +120,19 @@ export class CoursesService {
     if (response) {
       this.fetchCourses().subscribe((response) => {
         this.courses = response;
+        this.loadingService.hideLoading();
         this.coursesChanged$.next(this.courses);
       });
     }
   }
 
   async resetCourses() {
+    this.loadingService.showLoading();
     this.fetchCourses();
     this.fetchCourses().subscribe((response) => {
       this.courses = response;
     });
     this.coursesChanged$.next(this.courses);
+    this.loadingService.hideLoading();
   }
 }

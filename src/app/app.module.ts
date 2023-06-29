@@ -27,6 +27,8 @@ import { Page404Component } from './pages/page404/page404.component';
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { LoadingService } from './services/loading/loading.service';
+import { LoadingBlockComponent } from './html/loading/loading-block.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,7 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
     FormDurationComponent,
     FormAuthorsComponent,
     Page404Component,
+    LoadingBlockComponent,
   ],
   imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
   providers: [

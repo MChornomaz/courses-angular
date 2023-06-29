@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Course } from 'src/app/models/course.model';
 import { CoursesService } from '../../../services/courses/courses.service';
 import { Subscription } from 'rxjs';
+import { LoadingService } from 'src/app/services/loading/loading.service';
 
 @Component({
   selector: 'app-courses-list',
@@ -16,7 +17,10 @@ export class CoursesListComponent implements OnInit, OnDestroy {
   currentCourseNumber = 5;
   showLoadMore = true;
 
-  constructor(private coursesService: CoursesService) {
+  constructor(
+    private coursesService: CoursesService,
+    private loadingService: LoadingService
+  ) {
     this.subscription = this.coursesService.coursesChanged$.subscribe(
       (courses: Course[]) => {
         this.courses = courses;
@@ -25,10 +29,16 @@ export class CoursesListComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.courses = this.coursesService.getList();
+    this.loadingService.showLoading();
+    //Таймаут використанй чисто в демонстративних цілях, щоб спінер було видно, враховуючи швидкість роботи з сервером, і буде видалений після перевірки
+    setTimeout(() => {
+      this.courses = this.coursesService.getList();
+      this.loadingService.hideLoading();
+    }, 2000);
   }
 
   loadMoreClickHandler() {
+    this.loadingService.showLoading();
     this.coursesService
       .fetchCourses(this.currentCourseNumber, 5)
       .subscribe((newCourses: Course[]) => {
@@ -38,6 +48,7 @@ export class CoursesListComponent implements OnInit, OnDestroy {
           this.showLoadMore = false;
         }
       });
+    this.loadingService.hideLoading();
   }
 
   deleteCourseHandler(id: number) {
