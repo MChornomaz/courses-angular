@@ -26,12 +26,13 @@ export class CourseFormPageComponent implements OnInit {
     this.editPage = id ? true : false;
 
     if (id) {
-      const courseToEdit = this.coursesService.getCourseById(id);
+      const courseToEdit = this.coursesService.getCourseById(parseInt(id, 10));
       if (courseToEdit) {
-        this.title = courseToEdit.title;
+        this.title = courseToEdit.name;
         this.description = courseToEdit.description;
-        this.date = courseToEdit.creationDate.toDateString();
-        this.duration = courseToEdit.duration;
+        const courseDate = new Date(courseToEdit.date);
+        this.date = courseDate.toDateString();
+        this.duration = courseToEdit.length;
       }
     }
   }
@@ -41,19 +42,22 @@ export class CourseFormPageComponent implements OnInit {
       const id = this.route.snapshot.params['id'];
       const newCourse: Course = {
         id: id,
-        title: this.title,
-        duration: this.duration,
-        creationDate: new Date(this.date),
+        name: this.title,
+        length: this.duration,
+        date: new Date(this.date),
         description: this.description,
+        isTopRated: false,
       };
       this.coursesService.updateCourse(id, newCourse);
     } else {
       const newCourse: Course = {
-        id: new Date().getMilliseconds().toString(),
-        title: this.title,
-        duration: this.duration,
-        creationDate: new Date(this.date),
+        id: new Date().getMilliseconds(),
+        name: this.title,
+        length: this.duration,
+        date: new Date(this.date),
         description: this.description,
+        isTopRated: false,
+        authors: [{ id: 'test-id', name: 'Max' }],
       };
       this.coursesService.createCourse(newCourse);
     }

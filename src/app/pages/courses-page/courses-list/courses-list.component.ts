@@ -11,8 +11,10 @@ import { Subscription } from 'rxjs';
 export class CoursesListComponent implements OnInit, OnDestroy {
   courses: Course[] = [];
   isModalOpen = false;
-  deleteCourseId = '';
+  deleteCourseId = 0;
   subscription: Subscription;
+  currentCourseNumber = 5;
+  showLoadMore = true;
 
   constructor(private coursesService: CoursesService) {
     this.subscription = this.coursesService.coursesChanged$.subscribe(
@@ -27,20 +29,28 @@ export class CoursesListComponent implements OnInit, OnDestroy {
   }
 
   loadMoreClickHandler() {
-    console.log('Load more button pressed!');
+    this.coursesService
+      .fetchCourses(this.currentCourseNumber, 5)
+      .subscribe((newCourses: Course[]) => {
+        this.courses = [...this.courses, ...newCourses];
+        this.currentCourseNumber += 5;
+        if (newCourses.length < 5) {
+          this.showLoadMore = false;
+        }
+      });
   }
 
-  deleteCourseHandler(id: string) {
+  deleteCourseHandler(id: number) {
     this.coursesService.removeCourse(id);
     this.courses = this.coursesService.getList();
     this.closeModal();
   }
 
   trackByFn(index: number, course: Course): string {
-    return course.id;
+    return course.id.toString();
   }
 
-  openModal(id: string): void {
+  openModal(id: number): void {
     this.isModalOpen = true;
     this.deleteCourseId = id;
   }

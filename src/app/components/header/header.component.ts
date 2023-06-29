@@ -1,10 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  OnDestroy,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication/authentication.service';
 import { Subscription } from 'rxjs';
 import { deleteIcon, editIcon } from '../../constants';
@@ -33,7 +27,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     );
     this.userSubscription = this.authService.userChanged$.subscribe(
       (user: User) => {
-        this.userName = user.firsName;
+        this.userName = user.name.first;
       }
     );
   }
@@ -48,7 +42,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.authService.checkAuth();
     this.isAuthenticated = this.authService.isAuthenticated;
-    this.userName = this.authService.getUserInfo().firsName;
+    const token = localStorage.getItem('token');
+    if (token) {
+      this.authService.getUserInfo(token).subscribe((response) => {
+        const user = response;
+        this.userName = user.name.first;
+        localStorage.setItem('userName', this.userName);
+      });
+    }
   }
 
   logOut() {

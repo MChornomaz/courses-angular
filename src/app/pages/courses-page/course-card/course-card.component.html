@@ -2,8 +2,8 @@
 	<div class="w-3/4 md:w-full sm:w-full">
 		<div class="flex items-center justify-between sm:flex-col">
 			<h3 class="font-semibold text-3xl mb-4 flex items-center">
-				{{ course.title | uppercase }}
-				<div *ngIf="course.topRated">
+				{{ course.name | uppercase }}
+				<div *ngIf="course.isTopRated">
 					<img
 						src="assets/svg/star-svgrepo-com.svg"
 						alt="star icon"
@@ -14,7 +14,7 @@
 			<div class="flex text-slate-400 sm:mb-6">
 				<p class="mr-5 flex">
 					<img class="w-4 mr-1" src="assets/svg/clock.svg" alt="clock" />
-					{{ course.duration | duration }}
+					{{ course.length | duration }}
 				</p>
 				<p class="flex">
 					<img class="w-4 mr-2" src="assets/svg/calendar.svg" alt="clock" />
