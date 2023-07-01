@@ -4,37 +4,33 @@ import {
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectIsAuthenticated } from 'src/app/store/auth/auth.selectors';
 
 @Directive({
   selector: '[appIfAuthenticated]',
 })
 export class IfAuthenticatedDirective implements OnInit {
-  subscription: Subscription;
   isAuthenticated = false;
+  isAuth$: Observable<boolean>;
 
   constructor(
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef,
-    private authService: AuthenticationService
+    private store: Store
   ) {
-    this.subscription = this.authService.authenticationChanged$.subscribe(
-      (isAuth: boolean) => {
-        this.isAuthenticated = isAuth;
-      }
-    );
+    this.isAuth$ = store.select(selectIsAuthenticated);
+    this.isAuth$.subscribe((isAuthenticated: boolean) => {
+      this.isAuthenticated = isAuthenticated;
+    });
   }
 
   ngOnInit() {
-    this.subscription = this.authService.authenticationChanged$.subscribe(
-      (isAuth: boolean) => {
-        this.isAuthenticated = isAuth;
-        this.updateView();
-      }
-    );
-
-    this.updateView();
+    this.isAuth$.subscribe((isAuthenticated: boolean) => {
+      this.isAuthenticated = isAuthenticated;
+      this.updateView();
+    });
   }
 
   private updateView(): void {
@@ -43,9 +39,5 @@ export class IfAuthenticatedDirective implements OnInit {
     } else {
       this.viewContainer.clear();
     }
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

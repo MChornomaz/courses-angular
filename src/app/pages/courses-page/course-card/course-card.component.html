@@ -1,7 +1,7 @@
 <article class="flex items-center justify-between w-full">
 	<div class="w-3/4 md:w-full sm:w-full">
 		<div class="flex items-center justify-between sm:flex-col">
-			<h3 class="font-semibold text-3xl mb-4 flex items-center">
+			<h3 class="font-semibold text-3xl flex items-center w-3/4">
 				{{ course.name | uppercase }}
 				<div *ngIf="course.isTopRated">
 					<img
@@ -12,18 +12,18 @@
 				</div>
 			</h3>
 			<div class="flex text-slate-400 sm:mb-6">
-				<p class="mr-5 flex">
+				<p class="mr-5 flex whitespace-nowrap">
 					<img class="w-4 mr-1" src="assets/svg/clock.svg" alt="clock" />
 					{{ course.length | duration }}
 				</p>
-				<p class="flex">
+				<p class="flex whitespace-nowrap">
 					<img class="w-4 mr-2" src="assets/svg/calendar.svg" alt="clock" />
-					{{ creationDate | date : 'd MMM, y' }}
+					{{ dateToDisplay | date : 'd MMM, y' }}
 				</p>
 			</div>
 		</div>
 		<div>
-			<p class="text-slate-500 text-lg">{{ course.description }}</p>
+			<p class="text-slate-500 text-lg mt-4">{{ course.description }}</p>
 		</div>
 	</div>
 	<div class="flex w-1/4 md:mt-6 sm:mt-6 ml-8 items-center justify-center">

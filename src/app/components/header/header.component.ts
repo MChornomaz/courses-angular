@@ -1,35 +1,35 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AuthenticationService } from '../../services/authentication/authentication.service';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
 import { deleteIcon, editIcon } from '../../constants';
 import { User } from '../../models/user.model';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import {
+  selectIsAuthenticated,
+  selectUser,
+} from 'src/app/store/auth/auth.selectors';
+import { initUser, logOut } from 'src/app/store/auth/auth.actions';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
-  isAuthenticated = false;
+export class HeaderComponent implements OnInit {
+  isAuthenticated$: Observable<boolean>;
+  isAuth = false;
   userName = '';
-  authSubscription: Subscription;
-  userSubscription: Subscription;
+  user$: Observable<User>;
 
-  constructor(
-    private authService: AuthenticationService,
-    private router: Router
-  ) {
-    this.authSubscription = this.authService.authenticationChanged$.subscribe(
-      (isAuth: boolean) => {
-        this.isAuthenticated = isAuth;
-      }
-    );
-    this.userSubscription = this.authService.userChanged$.subscribe(
-      (user: User) => {
-        this.userName = user.name.first;
-      }
-    );
+  constructor(private router: Router, private store: Store) {
+    this.isAuthenticated$ = store.select(selectIsAuthenticated);
+    this.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+      this.isAuth = isAuthenticated;
+    });
+    this.user$ = store.select(selectUser);
+    this.user$.subscribe((userData: User) => {
+      this.userName = userData.name.first;
+    });
   }
 
   editIconSvg = editIcon;
@@ -40,25 +40,22 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.authService.checkAuth();
-    this.isAuthenticated = this.authService.isAuthenticated;
+    this.store.dispatch(initUser());
+    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
     const token = localStorage.getItem('token');
     if (token) {
-      this.authService.getUserInfo(token).subscribe((response) => {
-        const user = response;
-        this.userName = user.name.first;
-        localStorage.setItem('userName', this.userName);
+      this.user$ = this.store.select(selectUser);
+      this.user$.subscribe((userData: User) => {
+        this.userName = userData.name.first;
+      });
+      this.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+        this.isAuth = isAuthenticated;
       });
     }
   }
 
   logOut() {
-    this.authService.logOut();
     this.router.navigate(['login']);
-  }
-
-  ngOnDestroy() {
-    this.authSubscription.unsubscribe();
-    this.userSubscription.unsubscribe();
+    this.store.dispatch(logOut());
   }
 }

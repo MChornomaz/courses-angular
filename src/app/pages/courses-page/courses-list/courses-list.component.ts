@@ -1,59 +1,48 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Course } from 'src/app/models/course.model';
-import { CoursesService } from '../../../services/courses/courses.service';
-import { Subscription } from 'rxjs';
-import { LoadingService } from 'src/app/services/loading/loading.service';
+import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { selectCourses } from 'src/app/store/courses/courses.selectors';
+import {
+  deleteCourse,
+  loadMoreCourses,
+} from 'src/app/store/courses/courses.actions';
 
 @Component({
   selector: 'app-courses-list',
   templateUrl: './courses-list.component.html',
   styleUrls: ['./courses-list.component.scss'],
 })
-export class CoursesListComponent implements OnInit, OnDestroy {
+export class CoursesListComponent implements OnInit {
   courses: Course[] = [];
   isModalOpen = false;
   deleteCourseId = 0;
-  subscription: Subscription;
   currentCourseNumber = 5;
   showLoadMore = true;
+  coursesSub$: Observable<Course[]>;
 
-  constructor(
-    private coursesService: CoursesService,
-    private loadingService: LoadingService
-  ) {
-    this.subscription = this.coursesService.coursesChanged$.subscribe(
-      (courses: Course[]) => {
-        this.courses = courses;
-      }
-    );
+  constructor(private store: Store) {
+    this.coursesSub$ = store.select(selectCourses);
   }
 
   ngOnInit() {
-    this.loadingService.showLoading();
-    //Таймаут використанй чисто в демонстративних цілях, щоб спінер було видно, враховуючи швидкість роботи з сервером, і буде видалений після перевірки
-    setTimeout(() => {
-      this.courses = this.coursesService.getList();
-      this.loadingService.hideLoading();
-    }, 2000);
+    this.coursesSub$.subscribe((courseData) => {
+      this.courses = courseData;
+    });
   }
 
   loadMoreClickHandler() {
-    this.loadingService.showLoading();
-    this.coursesService
-      .fetchCourses(this.currentCourseNumber, 5)
-      .subscribe((newCourses: Course[]) => {
-        this.courses = [...this.courses, ...newCourses];
-        this.currentCourseNumber += 5;
-        if (newCourses.length < 5) {
-          this.showLoadMore = false;
-        }
-      });
-    this.loadingService.hideLoading();
+    this.store.dispatch(
+      loadMoreCourses({ start: this.currentCourseNumber, count: 5 })
+    );
+    this.currentCourseNumber += 5;
+    this.coursesSub$.subscribe((courseData) => {
+      this.courses = courseData;
+    });
   }
 
   deleteCourseHandler(id: number) {
-    this.coursesService.removeCourse(id);
-    this.courses = this.coursesService.getList();
+    this.store.dispatch(deleteCourse({ id: id.toString() }));
     this.closeModal();
   }
 
@@ -68,9 +57,5 @@ export class CoursesListComponent implements OnInit, OnDestroy {
 
   closeModal(): void {
     this.isModalOpen = false;
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }

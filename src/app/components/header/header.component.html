@@ -3,19 +3,19 @@
 >
 	<app-logo></app-logo>
 	<div class="flex justify-around items-center text-xl w-64">
-		<p class="font text-white flex items-center" *appIfAuthenticated>
+		<p class="font text-white flex items-center" *ngIf="isAuth">
 			<img src="assets/svg/user.svg" alt="user icon" />
 			<span>{{ userName }}</span>
 		</p>
 		<button
 			class="text-white flex items-center"
-			*ngIf="!isAuthenticated"
+			*ngIf="!isAuth"
 			(click)="showLoginPage()"
 		>
 			<img src="assets/svg/logout.svg" alt="user icon" /> LogIn</button
 		><button
 			class="text-white flex items-center"
-			*appIfAuthenticated
+			*ngIf="isAuth"
 			(click)="logOut()"
 		>
 			<img src="assets/svg/logout.svg" alt="user icon" />

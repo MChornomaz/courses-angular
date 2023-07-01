@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import { addCourseIconSVG } from 'src/app/constants';
 import { Router } from '@angular/router';
 

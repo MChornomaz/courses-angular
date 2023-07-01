@@ -1,42 +1,50 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { searchIconSvg } from 'src/app/constants';
-import { Subject } from 'rxjs';
-import { FilterPipe } from '../../../pipes/FilterPipe/filter.pipe';
-import { CoursesService } from '../../../services/courses/courses.service';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { timer, of } from 'rxjs';
+import { switchMap, debounceTime } from 'rxjs/operators';
+import { Store } from '@ngrx/store';
+import {
+  filterCourses,
+  getCourses,
+} from 'src/app/store/courses/courses.actions';
 
 @Component({
   selector: 'app-search-course',
   templateUrl: './search-course.component.html',
   styleUrls: ['./search-course.component.scss'],
-  providers: [FilterPipe],
 })
-export class SearchCourseComponent implements OnInit {
+export class SearchCourseComponent {
   searchString = '';
   searchIcon: SafeHtml;
-  inputChangedSubject: Subject<string> = new Subject<string>();
 
-  constructor(
-    private sanitizer: DomSanitizer,
-    private coursesService: CoursesService
-  ) {
+  constructor(private sanitizer: DomSanitizer, private store: Store) {
     this.searchIcon = this.sanitizer.bypassSecurityTrustHtml(searchIconSvg);
   }
 
-  ngOnInit() {
-    this.inputChangedSubject
-      .pipe(debounceTime(300), distinctUntilChanged())
-      .subscribe((searchString: string) => {
-        if (searchString.length >= 3) {
-          this.coursesService.filterCourses(searchString);
-        } else {
-          this.coursesService.resetCourses();
-        }
-      });
-  }
-
   handleInputChange() {
-    this.inputChangedSubject.next(this.searchString);
+    if (this.searchString.length >= 3) {
+      timer(500)
+        .pipe(
+          debounceTime(500),
+          switchMap(() => {
+            return of(
+              this.store.dispatch(
+                filterCourses({ searchString: this.searchString })
+              )
+            );
+          })
+        )
+        .subscribe();
+    } else if (this.searchString.length === 0) {
+      timer(500)
+        .pipe(
+          debounceTime(500),
+          switchMap(() => {
+            return of(this.store.dispatch(getCourses()));
+          })
+        )
+        .subscribe();
+    }
   }
 }

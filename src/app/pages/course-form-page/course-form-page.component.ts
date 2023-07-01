@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { CoursesService } from '../../services/courses/courses.service';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Course } from '../../models/course.model';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { selectCourses } from 'src/app/store/courses/courses.selectors';
+import {
+  createCourse,
+  updateCourse,
+} from 'src/app/store/courses/courses.actions';
 
 @Component({
   selector: 'app-course-form-page',
@@ -9,6 +15,8 @@ import { Course } from '../../models/course.model';
   styleUrls: ['./course-form-page.component.scss'],
 })
 export class CourseFormPageComponent implements OnInit {
+  courses: Course[] = [];
+  coursesSub: Observable<Course[]>;
   title = '';
   description = '';
   date = '';
@@ -18,15 +26,20 @@ export class CourseFormPageComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private coursesService: CoursesService
-  ) {}
+    private store: Store
+  ) {
+    this.coursesSub = store.select(selectCourses);
+  }
 
   ngOnInit() {
     const id = this.route.snapshot.params['id'];
     this.editPage = id ? true : false;
+    this.coursesSub.subscribe((coursesData) => {
+      this.courses = coursesData;
+    });
 
     if (id) {
-      const courseToEdit = this.coursesService.getCourseById(parseInt(id, 10));
+      const courseToEdit = this.getCourseById(parseInt(id, 10));
       if (courseToEdit) {
         this.title = courseToEdit.name;
         this.description = courseToEdit.description;
@@ -35,6 +48,14 @@ export class CourseFormPageComponent implements OnInit {
         this.duration = courseToEdit.length;
       }
     }
+  }
+
+  getCourseById(id: number) {
+    const result = this.courses.find((el) => el.id == id);
+    if (!result) {
+      throw new Error('Course was not found, please check the Id');
+    }
+    return result;
   }
 
   saveHandler() {
@@ -48,7 +69,7 @@ export class CourseFormPageComponent implements OnInit {
         description: this.description,
         isTopRated: false,
       };
-      this.coursesService.updateCourse(id, newCourse);
+      this.store.dispatch(updateCourse({ id, newCourse }));
     } else {
       const newCourse: Course = {
         id: new Date().getMilliseconds(),
@@ -59,7 +80,7 @@ export class CourseFormPageComponent implements OnInit {
         isTopRated: false,
         authors: [{ id: 'test-id', name: 'Max' }],
       };
-      this.coursesService.createCourse(newCourse);
+      this.store.dispatch(createCourse({ newCourse }));
     }
     this.router.navigate(['courses']);
   }

@@ -6,7 +6,7 @@ import { CoursesPageComponent } from './pages/courses-page/courses-page.componen
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import { LogoComponent } from './components/header/logo/logo.component';
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { SearchCourseComponent } from './pages/courses-page/search-course/search-course.component';
 import { NavigationComponent } from './components/navigation/navigation.component';
 import { CoursesListComponent } from './pages/courses-page/courses-list/courses-list.component';
@@ -27,8 +27,14 @@ import { Page404Component } from './pages/page404/page404.component';
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
-import { LoadingService } from './services/loading/loading.service';
 import { LoadingBlockComponent } from './html/loading/loading-block.component';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { authReducer } from './store/auth/auth.reducer';
+import { AuthEffects } from './store/auth/auth.effects';
+import { coursesReducer } from './store/courses/courses.reducer';
+import { CoursesEffects } from './store/courses/courses.effects';
 
 @NgModule({
   declarations: [
@@ -56,7 +62,18 @@ import { LoadingBlockComponent } from './html/loading/loading-block.component';
     Page404Component,
     LoadingBlockComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    StoreModule.forRoot({
+      auth: authReducer,
+      courses: coursesReducer,
+    }),
+    EffectsModule.forRoot([AuthEffects, CoursesEffects]),
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() }),
+  ],
   providers: [
     AuthGuardService,
     {
