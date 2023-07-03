@@ -1,58 +1,124 @@
-<div class="flex justify-center p-10">
-	<form
-		class="w-3/4 bg-white p-8 rounded-lg shadow-lg"
-		(ngSubmit)="saveHandler()"
-	>
-		<div class="p-4 rounded-lg">
-			<label for="title" class="block text-gray-700 font-bold mb-2"
-				>Title:</label
+<form
+	class="w-3/4 bg-white p-8 rounded-lg shadow-lg"
+	[formGroup]="courseForm"
+	(ngSubmit)="saveHandler()"
+>
+	<div class="p-4 rounded-lg">
+		<div class="flex items-center">
+			<label for="title" class="block text-gray-700 font-bold">Title:</label>
+			<div
+				*ngIf="
+					courseForm.get('title')?.invalid &&
+					(courseForm.get('title')?.touched || courseForm.get('title')?.dirty)
+				"
+				class="text-red-500 text-sm ml-5"
 			>
-			<input
-				id="title"
-				type="text"
-				class="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-				placeholder="Enter course title"
-				name="title"
-				[(ngModel)]="title"
-			/>
+				<div *ngIf="courseForm.get('title')?.errors?.['required']">
+					Title is required.
+				</div>
+				<div *ngIf="courseForm.get('title')?.errors?.['maxlength']">
+					Title cannot exceed 50 characters.
+				</div>
+			</div>
 		</div>
+	</div>
+	<input
+		id="title"
+		type="text"
+		class="w-full border rounded-md py-2 px-4 focus:outline-none"
+		placeholder="Enter course title"
+		formControlName="title"
+		(change)="updateFormValidity()"
+		[ngClass]="{
+			'border-red-500':
+				courseForm.get('title')?.invalid &&
+				(courseForm.get('title')?.touched || courseForm.get('title')?.dirty)
+		}"
+	/>
 
-		<div class="p-4 rounded-lg">
-			<label for="description" class="block text-gray-700 font-bold mb-2"
+	<div class="p-4 rounded-lg">
+		<div class="flex items-center">
+			<label for="description" class="block text-gray-700 font-bold"
 				>Description:</label
 			>
-			<textarea
-				id="description"
-				class="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-				placeholder="Enter course description"
-				name="description"
-				rows="6"
-				[(ngModel)]="description"
-			></textarea>
-		</div>
-		<app-form-date
-			[date]="date"
-			(dateChanged)="onDateChange($event)"
-		></app-form-date>
-		<app-form-duration
-			[duration]="duration"
-			(durationChanged)="onDurationChange($event)"
-		></app-form-duration>
-		<app-form-authors></app-form-authors>
-		<div class="w-1/4 flex justify-around mt-6">
-			<button
-				class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-				type="submit"
+			<div
+				*ngIf="
+					courseForm.get('description')?.invalid &&
+					(courseForm.get('description')?.touched ||
+						courseForm.get('description')?.dirty)
+				"
+				class="text-red-500 text-sm ml-5"
 			>
-				Save
-			</button>
-			<button
-				class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
-				type="button"
-				(click)="cancelHandler()"
-			>
-				Cancel
-			</button>
+				<div *ngIf="courseForm.get('description')?.errors?.['required']">
+					Description is required.
+				</div>
+				<div *ngIf="courseForm.get('description')?.errors?.['maxlength']">
+					Description cannot exceed 500 characters.
+				</div>
+			</div>
 		</div>
-	</form>
-</div>
+	</div>
+	<textarea
+		id="description"
+		class="w-full border rounded-md py-2 px-4 focus:outline-none"
+		placeholder="Enter course description"
+		formControlName="description"
+		rows="6"
+		(change)="updateFormValidity()"
+		[ngClass]="{
+			'border-red-500':
+				courseForm.get('description')?.invalid &&
+				(courseForm.get('description')?.touched ||
+					courseForm.get('description')?.dirty)
+		}"
+	></textarea>
+
+	<app-form-date
+		[date]="courseForm.value.date"
+		(dateChanged)="onDateChange($event)"
+		[courseForm]="courseForm"
+	></app-form-date>
+
+	<app-form-duration
+		[duration]="duration"
+		(durationChanged)="onDurationChanges($event)"
+		[formControlName]="'duration'"
+	></app-form-duration>
+
+	<app-form-authors
+		[authors]="authors"
+		[selectedAuthors]="selectedAuthors ? selectedAuthors : []"
+		[form]="courseForm"
+		(authorsChanged)="updateFormAuthorsValidity($event)"
+	></app-form-authors>
+
+	<div
+		*ngIf="
+			courseForm.get('authors')?.invalid &&
+			(courseForm.get('authors')?.touched || courseForm.get('authors')?.dirty)
+		"
+		class="text-red-500 text-sm ml-5"
+	>
+		<div *ngIf="courseForm.get('authors')?.errors?.['noAuthorsSelected']">
+			Please select at least one author.
+		</div>
+	</div>
+
+	<div class="w-1/4 flex justify-around mt-6">
+		<button
+			class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+			type="submit"
+			[class.disabled-button]="!isFormDataValid"
+			[disabled]="!isFormDataValid"
+		>
+			Save
+		</button>
+		<button
+			class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded"
+			type="button"
+			(click)="cancelHandler()"
+		>
+			Cancel
+		</button>
+	</div>
+</form>

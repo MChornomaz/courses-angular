@@ -125,7 +125,6 @@ export class CoursesEffects {
             if (courseData) {
               return this.fetchCourses().pipe(
                 map((coursesData) => {
-                  console.log('delete courses');
                   this.loadingService.hideLoading();
                   return setCourses({ courses: coursesData });
                 }),
@@ -187,7 +186,6 @@ export class CoursesEffects {
             if (courseData) {
               return this.fetchCourses().pipe(
                 map(() => {
-                  console.log('update courses');
                   this.loadingService.hideLoading();
                   return getCourses();
                 }),

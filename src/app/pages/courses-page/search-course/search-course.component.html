@@ -3,14 +3,12 @@
 		<span
 			class="absolute inset-y-0 left-0 flex items-center pl-3"
 			[innerHTML]="searchIcon"
-		>
-		</span>
+		></span>
 		<input
 			type="search"
 			class="border border-gray-300 rounded-l pl-10 pr-4 py-2 focus:outline-none focus:ring-1 focus:ring-green-500 focus:ring-offset-1 focus:ring-offset-green-500"
 			placeholder="Search"
-			[(ngModel)]="searchString"
-			(keyup)="handleInputChange()"
+			[formControl]="searchControl"
 		/>
 	</div>
 </div>

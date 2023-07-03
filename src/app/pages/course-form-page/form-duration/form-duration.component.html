@@ -1,17 +1,37 @@
 <div class="p-4 rounded-lg flex w-1/2">
 	<div>
-		<label for="duration" class="block text-gray-700 font-bold mb-2"
-			>Duration:</label
-		>
+		<div class="flex items-center">
+			<label for="duration" class="block text-gray-700 font-bold"
+				>Duration:</label
+			>
+			<div
+				*ngIf="control.hasError('required') && control.touched"
+				class="text-red-500 text-sm ml-5"
+			>
+				Duration is required.
+			</div>
+			<div
+				*ngIf="invalidNumber && control.touched"
+				class="text-red-500 text-sm ml-5"
+			>
+				Only numbers are allowed.
+			</div>
+		</div>
 		<input
 			id="duration"
 			type="number"
 			class="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
 			placeholder="Enter course duration"
-			name="duration"
-			[(ngModel)]="duration"
-			(ngModelChange)="onDurationChange()"
+			[formControl]="control"
+			required
+			min="1"
+			(input)="onDurationChange(control.value)"
+			[ngClass]="{
+				'border-red-500':
+					(invalidNumber && control.touched) ||
+					(control.hasError('required') && control.touched)
+			}"
 		/>
 	</div>
-	<p>{{ duration | duration }}</p>
+	<p>{{ control.value | duration }}</p>
 </div>

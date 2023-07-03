@@ -1,0 +1,22 @@
+.form-authors-autocomplete {
+  position: absolute;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.form-authors-autocomplete li {
+  cursor: pointer;
+  padding: 4px;
+}
+
+.form-authors-autocomplete li:hover {
+  background-color: #f1f1f1;
+}
+
+.error {
+  border-color: #f56565 !important;
+}
