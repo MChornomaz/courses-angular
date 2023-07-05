@@ -1,33 +1,60 @@
 import { Injectable } from '@angular/core';
 import { Course } from '../../models/course.model';
-import { COURSE_LIST } from '../../constants';
 import { Subject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { catchError } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CoursesService {
-  private courses: Course[] = COURSE_LIST;
+  private courses: Course[] = [];
   coursesChanged$ = new Subject<Course[]>();
+
+  constructor(private http: HttpClient) {
+    this.fetchCourses();
+    this.fetchCourses().subscribe((response) => {
+      this.courses = response;
+    });
+  }
 
   getList() {
     return [...this.courses];
   }
 
-  createCourse(course: Course) {
-    this.courses.push(course);
-    this.coursesChanged$.next(this.getList());
+  fetchCourses(start = 0, count = 5) {
+    return this.http.get<Course[]>(
+      `http://localhost:3004/courses?start=${start}&count=${count}`
+    );
   }
 
-  getCourseById(id: string) {
-    const result = this.courses.find((el) => el.id === id);
+  async createCourse(course: Course) {
+    const response = await this.http
+      .post<Course>(`http://localhost:3004/courses/`, course)
+      .pipe(
+        catchError((error) => {
+          throw new Error(`An error occurred: ${error.message}`);
+        })
+      )
+      .toPromise();
+
+    if (response) {
+      this.fetchCourses().subscribe((response) => {
+        this.courses = response;
+        this.coursesChanged$.next(this.courses);
+      });
+    }
+  }
+
+  getCourseById(id: number) {
+    const result = this.courses.find((el) => el.id == id);
     if (!result) {
       throw new Error('Course was not found, please check the Id');
     }
     return result;
   }
 
-  updateCourse(id: string, course: Course) {
+  updateCourse(id: number, course: Course) {
     const index = this.courses.findIndex((el) => el.id === id);
     if (index !== -1) {
       this.courses[index] = { ...course };
@@ -35,20 +62,47 @@ export class CoursesService {
     }
   }
 
-  removeCourse(id: string) {
-    this.courses = this.courses.filter((el) => el.id !== id);
-    this.coursesChanged$.next(this.getList());
+  async filterCourses(searchString: string) {
+    const response = await this.http
+      .get<Course[]>(
+        `http://localhost:3004/courses?textFragment=${searchString}`
+      )
+      .pipe(
+        catchError((error) => {
+          throw new Error(`An error occurred: ${error.message}`);
+        })
+      )
+      .toPromise();
+
+    if (response) {
+      this.courses = response;
+      this.coursesChanged$.next(this.courses);
+    }
   }
 
-  filterCourses(searchString: string) {
-    this.courses = this.courses.filter((el) =>
-      el.title.trim().toLowerCase().includes(searchString.trim().toLowerCase())
-    );
-    this.coursesChanged$.next(this.getList());
+  async removeCourse(id: number) {
+    const response = await this.http
+      .delete<Course[]>(`http://localhost:3004/courses/${id}`)
+      .pipe(
+        catchError((error) => {
+          throw new Error(`An error occurred: ${error.message}`);
+        })
+      )
+      .toPromise();
+
+    if (response) {
+      this.fetchCourses().subscribe((response) => {
+        this.courses = response;
+        this.coursesChanged$.next(this.courses);
+      });
+    }
   }
 
-  resetCourses() {
-    this.courses = COURSE_LIST;
-    this.coursesChanged$.next(this.getList());
+  async resetCourses() {
+    this.fetchCourses();
+    this.fetchCourses().subscribe((response) => {
+      this.courses = response;
+    });
+    this.coursesChanged$.next(this.courses);
   }
 }

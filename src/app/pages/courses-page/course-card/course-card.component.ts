@@ -17,15 +17,16 @@ import { Router } from '@angular/router';
 })
 export class CourseCardComponent {
   @Input() course: Course = {
-    id: '',
-    title: '',
-    creationDate: new Date(),
-    duration: 0,
+    id: 0,
+    name: '',
+    date: new Date(),
+    length: 0,
     description: '',
+    isTopRated: false,
   };
 
   @Input() creationDate: Date = new Date();
-  @Output() deleteButtonClicked = new EventEmitter<string>();
+  @Output() deleteButtonClicked = new EventEmitter<number>();
   editIconSvg = editIcon;
   deleteIconSvg = deleteIcon;
 

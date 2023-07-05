@@ -27,7 +27,7 @@ export class NavigationComponent implements OnInit {
       .subscribe((id) => {
         const courseId = id ? id : null;
         if (courseId) {
-          const title = this.coursesService.getCourseById(courseId).title;
+          const title = this.coursesService.getCourseById(courseId).name;
           this.courseTitle = `/${title}`;
         } else {
           this.courseTitle = '';

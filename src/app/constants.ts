@@ -33,30 +33,30 @@ export const searchIconSvg = `<svg
 				<line x1="21" y1="21" x2="16.65" y2="16.65" />
 			</svg>`;
 
-export const COURSE_LIST: Course[] = [
-  {
-    id: 'course1',
-    title: 'Video Course 1. Angular',
-    creationDate: new Date(2023, 5, 8),
-    duration: 126,
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ducimus illo sequi consequatur quibusdam libero fuga, consequuntur dicta vero nihil voluptas? Quidem saepe fugiat voluptas in sit incidunt inventore numquam. Reprehenderit fugit aliquid nemo ipsa iusto voluptatem temporibus odit nihil provident voluptatibus tempora vero, esse natus ratione laborum quia eaque!',
-    topRated: true,
-  },
-  {
-    id: 'course2',
-    title: 'Video Course 2. Angular',
-    creationDate: new Date(2023, 5, 25),
-    duration: 49,
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ducimus illo sequi consequatur quibusdam libero fuga, consequuntur dicta vero nihil voluptas? Quidem saepe fugiat voluptas in sit incidunt inventore numquam. Reprehenderit fugit aliquid nemo ipsa iusto voluptatem temporibus odit nihil provident voluptatibus tempora vero, esse natus ratione laborum quia eaque!',
-  },
-  {
-    id: 'course3',
-    title: 'Video Course 3. React',
-    creationDate: new Date(2023, 4, 2),
-    duration: 60,
-    description:
-      'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ducimus illo sequi consequatur quibusdam libero fuga, consequuntur dicta vero nihil voluptas? Quidem saepe fugiat voluptas in sit incidunt inventore numquam. Reprehenderit fugit aliquid nemo ipsa iusto voluptatem temporibus odit nihil provident voluptatibus tempora vero, esse natus ratione laborum quia eaque!',
-  },
-];
+// export const COURSE_LIST: Course[] = [
+//   {
+//     id: 'course1',
+//     title: 'Video Course 1. Angular',
+//     creationDate: new Date(2023, 5, 8),
+//     duration: 126,
+//     description:
+//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ducimus illo sequi consequatur quibusdam libero fuga, consequuntur dicta vero nihil voluptas? Quidem saepe fugiat voluptas in sit incidunt inventore numquam. Reprehenderit fugit aliquid nemo ipsa iusto voluptatem temporibus odit nihil provident voluptatibus tempora vero, esse natus ratione laborum quia eaque!',
+//     topRated: true,
+//   },
+//   {
+//     id: 'course2',
+//     title: 'Video Course 2. Angular',
+//     creationDate: new Date(2023, 5, 25),
+//     duration: 49,
+//     description:
+//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ducimus illo sequi consequatur quibusdam libero fuga, consequuntur dicta vero nihil voluptas? Quidem saepe fugiat voluptas in sit incidunt inventore numquam. Reprehenderit fugit aliquid nemo ipsa iusto voluptatem temporibus odit nihil provident voluptatibus tempora vero, esse natus ratione laborum quia eaque!',
+//   },
+//   {
+//     id: 'course3',
+//     title: 'Video Course 3. React',
+//     creationDate: new Date(2023, 4, 2),
+//     duration: 60,
+//     description:
+//       'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse ducimus illo sequi consequatur quibusdam libero fuga, consequuntur dicta vero nihil voluptas? Quidem saepe fugiat voluptas in sit incidunt inventore numquam. Reprehenderit fugit aliquid nemo ipsa iusto voluptatem temporibus odit nihil provident voluptatibus tempora vero, esse natus ratione laborum quia eaque!',
+//   },
+// ];

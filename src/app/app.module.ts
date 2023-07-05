@@ -25,6 +25,8 @@ import { FormDurationComponent } from './pages/course-form-page/form-duration/fo
 import { FormAuthorsComponent } from './pages/course-form-page/form-authors/form-authors.component';
 import { Page404Component } from './pages/page404/page404.component';
 import { AuthGuardService } from './services/auth-guard/auth-guard.service';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -51,8 +53,15 @@ import { AuthGuardService } from './services/auth-guard/auth-guard.service';
     FormAuthorsComponent,
     Page404Component,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule],
-  providers: [AuthGuardService],
+  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  providers: [
+    AuthGuardService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
