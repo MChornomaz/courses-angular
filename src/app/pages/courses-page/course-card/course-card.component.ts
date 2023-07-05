@@ -19,7 +19,7 @@ export class CourseCardComponent {
   @Input() course: Course = {
     id: 0,
     name: '',
-    date: new Date(),
+    date: new Date('2017-09-28T04:39:24+00:00'),
     length: 0,
     description: '',
     isTopRated: false,
@@ -29,8 +29,23 @@ export class CourseCardComponent {
   @Output() deleteButtonClicked = new EventEmitter<number>();
   editIconSvg = editIcon;
   deleteIconSvg = deleteIcon;
+  dateToDisplay = '';
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this.dateToDisplay = this.formatDate(this.creationDate);
+  }
+
+  formatDate(date: Date): string {
+    if (date) {
+      return date.toLocaleDateString('en-US', {
+        day: 'numeric',
+        month: 'short',
+        year: 'numeric',
+      });
+    } else {
+      return '';
+    }
+  }
 
   deleteButtonClickHandler() {
     this.deleteButtonClicked.emit(this.course.id);

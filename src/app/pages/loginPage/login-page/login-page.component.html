@@ -14,7 +14,7 @@
 					class="w-full border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
 					placeholder="Enter your email"
 					name="email"
-					[(ngModel)]="email"
+					[(ngModel)]="login"
 				/>
 			</div>
 			<div class="p-4 rounded-lg">
@@ -34,7 +34,7 @@
 				<app-button
 					[buttonText]="'Login'"
 					[svgIcon]="null"
-					(click)="login()"
+					(click)="logIn()"
 				></app-button>
 			</div>
 		</form>

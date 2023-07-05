@@ -2,7 +2,7 @@
 	<div>
 		<app-course-card
 			*ngFor="
-				let courseItem of courses | orderByDate : 'creationDate';
+				let courseItem of courses | orderByDate : 'date';
 				trackBy: trackByFn
 			"
 			(deleteButtonClicked)="openModal(courseItem.id)"

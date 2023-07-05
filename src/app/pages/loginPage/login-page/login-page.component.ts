@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { AuthenticationService } from '../../../services/authentication/authentication.service';
 import { Router } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { logIn } from 'src/app/store/auth/auth.actions';
+import { selectIsAuthenticated } from 'src/app/store/auth/auth.selectors';
 
 @Component({
   selector: 'app-login-page',
@@ -8,17 +11,25 @@ import { Router } from '@angular/router';
   styleUrls: ['./login-page.component.scss'],
 })
 export class LoginPageComponent {
-  email = '';
+  login = '';
   password = '';
-  constructor(
-    private authenticationService: AuthenticationService,
-    private router: Router
-  ) {}
+  isAuth$: Observable<boolean>;
+  isAuthenticated = false;
+  constructor(private store: Store, private router: Router) {
+    this.isAuth$ = store.select(selectIsAuthenticated);
+    this.isAuth$.subscribe((isAuthenticated: boolean) => {
+      this.isAuthenticated = isAuthenticated;
+      if (this.isAuthenticated) {
+        this.router.navigate(['courses']);
+      }
+    });
+  }
 
-  login() {
-    if (this.email.trim().length > 0 && this.password.trim().length > 0) {
-      this.authenticationService.login(this.email, this.password);
-      this.router.navigate(['courses']);
+  logIn() {
+    if (this.login.trim().length > 0 && this.password.trim().length > 0) {
+      this.store.dispatch(
+        logIn({ login: this.login, password: this.password })
+      );
     }
   }
 }
