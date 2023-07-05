@@ -62,7 +62,6 @@ export class AuthenticationService {
             })
           )
           .toPromise();
-        console.log(userData);
 
         if (userData) {
           const testUser: User = {
@@ -74,7 +73,6 @@ export class AuthenticationService {
             login,
             token,
           };
-          console.log(testUser);
           this.isAuthenticated = true;
           localStorage.setItem('userName', testUser.name.first);
           localStorage.setItem('userLogin', login);
