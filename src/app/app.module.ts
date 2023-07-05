@@ -35,6 +35,7 @@ import { authReducer } from './store/auth/auth.reducer';
 import { AuthEffects } from './store/auth/auth.effects';
 import { coursesReducer } from './store/courses/courses.reducer';
 import { CoursesEffects } from './store/courses/courses.effects';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { CoursesEffects } from './store/courses/courses.effects';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     StoreModule.forRoot({
       auth: authReducer,
       courses: coursesReducer,

@@ -9,6 +9,7 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class MainButtonComponent implements OnInit {
   @Input() buttonText = 'Add Course';
   @Input() svgIcon: string | null = '';
+  @Input() disabled = false;
 
   sanitizedSvgIcon?: SafeHtml;
 
