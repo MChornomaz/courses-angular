@@ -21,9 +21,6 @@ export class IfAuthenticatedDirective implements OnInit {
     private store: Store
   ) {
     this.isAuth$ = store.select(selectIsAuthenticated);
-    this.isAuth$.subscribe((isAuthenticated: boolean) => {
-      this.isAuthenticated = isAuthenticated;
-    });
   }
 
   ngOnInit() {

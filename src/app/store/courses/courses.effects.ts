@@ -13,8 +13,9 @@ import {
   createCourse,
   updateCourse, // Import the loadMoreCourses action
 } from './courses.actions';
-import { catchError, map, switchMap, of, Observable } from 'rxjs';
+import { catchError, map, switchMap, of, Observable, concatMap } from 'rxjs';
 import { LoadingService } from 'src/app/services/loading/loading.service';
+import { API_HOST } from 'src/app/constants';
 
 @Injectable()
 export class CoursesEffects {
@@ -27,25 +28,21 @@ export class CoursesEffects {
 
   fetchCourses(start = 0, count = 5) {
     return this.http.get<Course[]>(
-      `http://localhost:3004/courses?start=${start}&count=${count}`
+      `${API_HOST}courses?start=${start}&count=${count}`
     );
   }
 
   removeCourse(id: number) {
-    return this.http
-      .delete<Course[]>(`http://localhost:3004/courses/${id}`)
-      .pipe(
-        catchError((error) => {
-          throw new Error(`An error occurred: ${error.message}`);
-        })
-      );
+    return this.http.delete<Course[]>(`${API_HOST}courses/${id}`).pipe(
+      catchError((error) => {
+        throw new Error(`An error occurred: ${error.message}`);
+      })
+    );
   }
 
   getCoursesBySearchString(searchString: string): Observable<Course[]> {
     return this.http
-      .get<Course[]>(
-        `http://localhost:3004/courses?textFragment=${searchString}`
-      )
+      .get<Course[]>(`${API_HOST}courses?textFragment=${searchString}`)
       .pipe(
         catchError((error) => {
           throw new Error(`An error occurred: ${error.message}`);
@@ -54,23 +51,19 @@ export class CoursesEffects {
   }
 
   createCourse(course: Course) {
-    return this.http
-      .post<Course>(`http://localhost:3004/courses/`, course)
-      .pipe(
-        catchError((error) => {
-          throw new Error(`An error occurred: ${error.message}`);
-        })
-      );
+    return this.http.post<Course>(`${API_HOST}courses/`, course).pipe(
+      catchError((error) => {
+        throw new Error(`An error occurred: ${error.message}`);
+      })
+    );
   }
 
   updateCourse(id: string, newCourse: Course) {
-    return this.http
-      .patch(`http://localhost:3004/courses/${id}`, newCourse)
-      .pipe(
-        catchError((error) => {
-          throw new Error(`An error occurred: ${error.message}`);
-        })
-      );
+    return this.http.patch(`${API_HOST}courses/${id}`, newCourse).pipe(
+      catchError((error) => {
+        throw new Error(`An error occurred: ${error.message}`);
+      })
+    );
   }
 
   getCoursesData$ = createEffect(() => {
@@ -124,9 +117,9 @@ export class CoursesEffects {
           switchMap((courseData) => {
             if (courseData) {
               return this.fetchCourses().pipe(
-                map((coursesData) => {
+                concatMap((coursesData) => {
                   this.loadingService.hideLoading();
-                  return setCourses({ courses: coursesData });
+                  return [setCourses({ courses: coursesData })];
                 }),
                 catchError((error) => {
                   console.error(error.message);
@@ -154,10 +147,9 @@ export class CoursesEffects {
           switchMap((courseData) => {
             if (courseData) {
               return this.fetchCourses().pipe(
-                map(() => {
-                  console.log('create courses');
+                switchMap(() => {
                   this.loadingService.hideLoading();
-                  return getCourses();
+                  return [getCourses()];
                 }),
                 catchError((error) => {
                   console.error(error.message);
@@ -185,9 +177,9 @@ export class CoursesEffects {
           switchMap((courseData) => {
             if (courseData) {
               return this.fetchCourses().pipe(
-                map(() => {
+                switchMap(() => {
                   this.loadingService.hideLoading();
-                  return getCourses();
+                  return [getCourses()];
                 }),
                 catchError((error) => {
                   console.error(error.message);
@@ -212,7 +204,7 @@ export class CoursesEffects {
         const { searchString } = action;
         return this.getCoursesBySearchString(searchString).pipe(
           switchMap((courseData: Course[]) => {
-            return of(setCourses({ courses: courseData }));
+            return [setCourses({ courses: courseData })];
           }),
           catchError((error) => {
             console.error(error.message);

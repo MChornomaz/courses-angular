@@ -5,23 +5,21 @@ import { authUser, initUser, logIn, logOut, setUser } from './auth.actions';
 import { switchMap, catchError, map, tap, concatMap } from 'rxjs/operators';
 import { User } from 'src/app/models/user.model';
 import { of } from 'rxjs';
+import { API_HOST } from 'src/app/constants';
 
 @Injectable()
 export class AuthEffects {
   constructor(private actions$: Actions, private http: HttpClient) {}
 
   getToken(login: string, password: string) {
-    return this.http.post<{ token: string }>(
-      'http://localhost:3004/auth/login',
-      {
-        login,
-        password,
-      }
-    );
+    return this.http.post<{ token: string }>(`${API_HOST}auth/login`, {
+      login,
+      password,
+    });
   }
 
   getUserInfo(token: string) {
-    return this.http.post<User>('http://localhost:3004/auth/userinfo', {
+    return this.http.post<User>(`${API_HOST}auth/userinfo`, {
       token,
     });
   }

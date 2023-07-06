@@ -11,6 +11,7 @@ import {
 } from 'src/app/store/courses/courses.actions';
 import { formatDate } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
+import { API_HOST } from 'src/app/constants';
 
 @Component({
   selector: 'app-course-form-page',
@@ -47,7 +48,7 @@ export class CourseFormPageComponent implements OnInit {
   }
 
   getAuthors() {
-    return this.http.get<Author[]>('http://localhost:3004/authors');
+    return this.http.get<Author[]>(`${API_HOST}authors`);
   }
 
   ngOnInit() {

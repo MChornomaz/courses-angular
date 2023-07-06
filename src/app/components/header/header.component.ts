@@ -23,13 +23,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private router: Router, private store: Store) {
     this.isAuthenticated$ = store.select(selectIsAuthenticated);
-    this.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
-      this.isAuth = isAuthenticated;
-    });
     this.user$ = store.select(selectUser);
-    this.user$.subscribe((userData: User) => {
-      this.userName = userData.name.first;
-    });
   }
 
   editIconSvg = editIcon;
@@ -41,10 +35,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(initUser());
-    this.isAuthenticated$ = this.store.select(selectIsAuthenticated);
+    this.isAuthenticated$.subscribe((isAuthenticated: boolean) => {
+      this.isAuth = isAuthenticated;
+    });
     const token = localStorage.getItem('token');
     if (token) {
-      this.user$ = this.store.select(selectUser);
       this.user$.subscribe((userData: User) => {
         this.userName = userData.name.first;
       });
